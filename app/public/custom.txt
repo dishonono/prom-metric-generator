@@ -1,0 +1,4 @@
+# HELP noam_demo_metric A simple metric for noam demo
+# TYPE noam_demo_metric gauge
+noam_demo_metric{city="tel-aviv"} 5
+noam_demo_metric{city="herzilya"} 3

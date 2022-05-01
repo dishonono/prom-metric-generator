@@ -1,0 +1,19 @@
+{
+  "name": "com.example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-prometheus-middleware": "^1.2.0",
+    "percentile": "^1.6.0",
+    "prom-client": "^13.1.0",
+    "random": "^3.0.6",
+    "string-hash": "^1.1.3"
+  }
+}
