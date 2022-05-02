@@ -7,31 +7,21 @@ const failureCounter = new client.Counter({
     labelNames: ['method', 'statusCode', 'path']
 });
 
-async function reportMetrics(req, res, next) {
-    await next();
-    if (res.statusCode >= 400) {
-        failureCounter.inc({method: req.method, statusCode: res.statusCode, path: req.path});
-    }
+function increaseFailureCounter(method, statusCode, path) {
+    console.log('increasing failure count:', {method, statusCode, path});
+    failureCounter.inc({method, statusCode, path});
 }
 
-
 function initPrometheusClient(app) {
-    const collectDefaultMetrics = client.collectDefaultMetrics;
-    const Registry = client.Registry;
-    const register = new Registry();
-    collectDefaultMetrics({ register });
-    initPrometheusMiddleware(app);
+    usePrometheus(app);
     return client;
 }
 
-
-function initPrometheusMiddleware(app) {
+function usePrometheus(app) {
     app.use(promMid({
         metricsPath: '/metrics',
-        collectDefaultMetrics: true
-    }));
-    
-    app.use(reportMetrics);
+        collectDefaultMetrics: false
+    }));    
 }
 
-module.exports = { initPrometheusClient };
+module.exports = { initPrometheusClient, increaseFailureCounter };
