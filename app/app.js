@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const { sleep, getTrueByOdds } = require('./utils');
-const { initPrometheusClient, increaseFailureCount } = require('./prometheus');
+const { initPrometheusClient } = require('./prometheus');
+const { useAppInsights } = require('./app_insights');
 
 initPrometheusClient(app);
+useAppInsights(app);
 
 app.get('/delay', async (req) => {
     const { delay = 1000 } = req.query;
@@ -11,22 +13,20 @@ app.get('/delay', async (req) => {
     console.log(`sleeping for ${delay} miliseconds`);
 });
 
+app.post('/file', (req, res) => {
+
+});
+
 app.get('/', async (req, res) => {
-    const { failureChance = 0.99 } = req.query;
+    const { failureChance = 0.01 } = req.query;
     const isFailure = getTrueByOdds(failureChance);
     if (isFailure){
         const { statusCode = 500 } = req.query;
-        res.status(statusCode);
+        res.status(statusCode).json('filing on purpose');
         return;
     }
-    console.log('not failing!');
+    res.status(200).json('filing on purpose');
 });
-
-
-// app.post('/file', async (req) = {
-
-// })
-
 
 const PORT = 3000;
 

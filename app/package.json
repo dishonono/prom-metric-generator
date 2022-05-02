@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "applicationinsights": "^2.3.2",
     "express": "^4.17.1",
     "express-prometheus-middleware": "^1.2.0",
     "percentile": "^1.6.0",
