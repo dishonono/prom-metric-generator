@@ -13,13 +13,17 @@ app.get('/', async (req, res) => {
     return res.json("don't worry, the app is up!");
 });
 
-app.post('/', async (req, res) => {
-    const { dependencyTracking, path, method, statusCode } = req.body;
+app.post('/failures', async (req, res) => {
+    const { path, method, statusCode } = req.body;
     if (statusCode >= 400) {
         increaseFailureCounter(method, statusCode, path);
     }
-    trackDependency(dependencyTracking);
-    return res.json('Done digesting metrics!');
+    return res.json('Done handling failure metrics!');
+});
+
+app.post('/dependencies', async (req, res) => {
+    trackDependency(req.body);
+    return res.json('Done handling dependency logs!');
 });
 
 const PORT = 3000;
