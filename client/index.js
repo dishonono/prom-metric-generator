@@ -6,12 +6,11 @@ const axios = require('axios');
 const { serverUrl, methodFailureRates, dependencyLatencies, dependencyLatenctVariance, sleepPeriod } = config;
 
 async function reportHttpFailures() {
-    const httpfailureRequests = Object.keys(methodFailureRates).map(async method => {
-        const value = methodFailureRates[method];
+    const httpfailureRequests = methodFailureRates.map(async methodFailureRate => {
         const body = {
-            path: value.path,
-            method: value.httpMethod,
-            statusCode: Math.random() < value.failureRate ? 500 : 200
+            path: methodFailureRate.path,
+            method: methodFailureRate.httpMethod,
+            statusCode: Math.random() < methodFailureRate.failureRate ? 500 : 200
         }
         return axios.post(`${serverUrl}/failures`, body);
     });
@@ -20,11 +19,16 @@ async function reportHttpFailures() {
 }
 
 async function ReportdependencyLatencyMetrics() {
-    const dependencyLatencyRequests = Object.keys(dependencyLatencies).map(async dependency => {
+    const dependencyLatencyRequests = dependencyLatencies.map(async dependency => {
         const body = {
-            name: dependency,
-            latency: generateUniformMetricValue(dependencyLatencies[dependency], dependencyLatenctVariance)
-        }
+             duration: generateUniformMetricValue(dependency.duration, dependencyLatenctVariance),
+             target: dependency.target,
+             name: dependency.name,
+             data: dependency.data,
+             success: dependency.success,
+             dependencyTypeName : dependency.dependencyTypeName
+            };
+
         return axios.post(`${serverUrl}/dependencies`, body);
     });
 

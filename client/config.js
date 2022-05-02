@@ -1,15 +1,15 @@
 module.exports = {
     serverUrl: 'http://localhost:3000',
-    methodFailureRates: {
-        Get: { failureRate: 0.1, httpMethod: 'GET', path: '/'},
-        Put: { failureRate: 0.01, httpMethod: 'PUT', path: '/' },
-        List: { failureRate: 0.025, httpMethod: 'GET', path: '/list' },
-        Settings: { failureRate: 0.003, httpMethod: 'GET', path: '/settings' },
-    },
-    dependencyLatencies: {
-        Users: 50,
-        Settings: 200
-    },
+    methodFailureRates: [
+       { method: 'Get', failureRate: 0.2, httpMethod: 'GET1', path: '/'},
+       { method: 'Put', failureRate: 0.04, httpMethod: 'PUT1', path: '/' },
+       { method: 'List', failureRate: 0.05, httpMethod: 'GET1', path: '/list' },
+       { method: 'Settings', failureRate: 0.008, httpMethod: 'GET1', path: '/settings' },
+    ],
+    dependencyLatencies: [
+        { duration: 2000, target: "http://users1-db", name: 'Users1', data: 'SELECT * FROM Users', success: true, dependencyTypeName : 'ZQL'},
+        { duration: 400, target: "http://settings1-db", name: 'Settings1', data: 'SELECT * FROM Settings', success: true, dependencyTypeName : 'ZQL'}
+    ],
     sleepPeriod: 500,
     dependencyLatenctVariance: 0.1
 }
