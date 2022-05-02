@@ -2,7 +2,6 @@ const { methodFailureRate } = require("./config");
 
 function generateUniformDistributionValue(base, delta) {
     const offset = (Math.random() - 0.5) * delta;
-    console.log(base + offset);
     return base + offset;
 }
 
