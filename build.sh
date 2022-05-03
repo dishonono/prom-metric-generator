@@ -49,13 +49,8 @@ cd client
 build_docker_and_deploy client
 cd ..
 
-# cd prometheus
-# build_docker_and_deploy prometheus
-# cd ..
+kubectl apply -f conf1.yaml
 
-cd grafana
-build_docker_and_deploy grafana
-cd ..
 
 trap : 0 
 echo >&2
