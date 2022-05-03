@@ -22,7 +22,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: client
-        image: promalertsacr.azurecr.io/client:v1.0.5
+        image: promalertsacr.azurecr.io/client:v1.0.8
         ports:
         - containerPort: 3000
         resources:
@@ -99,7 +99,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: web
-        image: promalertsacr.azurecr.io/web:v1.0.66
+        image: promalertsacr.azurecr.io/web:v1.0.67
         ports:
         - containerPort: 3000
         resources:
@@ -127,16 +127,17 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: webin
+  name: web
   namespace: node
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
     appgw.ingress.kubernetes.io/health-probe-path: "/"
 spec:
   rules:
+  - host: 
   - http:
       paths:
-      - path: /blabladev
+      - path: /failures
         pathType: Exact
         backend:
           service:
@@ -144,6 +145,13 @@ spec:
             port: 
               number: 80
       - path: /metrics
+        pathType: Exact
+        backend:
+          service:
+            name: web
+            port: 
+              number: 80
+      - path: /dependencies
         pathType: Exact
         backend:
           service:
@@ -200,22 +208,8 @@ kind: ConfigMap
 metadata:
   name: grafana-datasources
   namespace: node
-data:
-  prometheus.yaml: |-
-    {
-        "apiVersion": 1,
-        "datasources": [
-            {
-               "access":"proxy",
-                "editable": true,
-                "name": "prometheus",
-                "orgId": 1,
-                "type": "prometheus",
-                "url": "http://prometheus-service.monitoring.svc:8080",
-                "version": 1
-            }
-        ]
-    }
+
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -227,9 +221,14 @@ metadata:
 spec:
   selector: 
     app: grafana
-  type: NodePort  
+  type: NodePort
   ports:
     - port: 3000
       targetPort: 3000
       nodePort: 32000
-          
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+
