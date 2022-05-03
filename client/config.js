@@ -1,5 +1,5 @@
 module.exports = {
-    serverUrl: 'http://localhost:3000',
+    serverUrl: 'http://web:3000',
     methodFailureRates: [
        { method: 'Get', failureRate: 0.2, httpMethod: 'GET1', path: '/'},
        { method: 'Put', failureRate: 0.04, httpMethod: 'PUT1', path: '/' },

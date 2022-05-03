@@ -37,11 +37,3 @@ scrape_configs:
     - targets: ['web:3000']
       
   - job_name: 'noam_custom'
-
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-    metrics_path: '/custom.txt'
-    static_configs:
-    - targets: ['web:3000']
-      # labels:
-      #     cluster: 'democluster1'
