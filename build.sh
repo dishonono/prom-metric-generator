@@ -32,7 +32,8 @@ build_docker_and_deploy () {
     kubectl set image deploy $app $app=promalertsacr.azurecr.io/$app:$version -n node
 
     echo "Deployed $app with version $version"
-    sed -i "s/promalertsacr.azurecr.io\/$app:v1\.[[:digit:]]\.[[:digit:]][[:digit:]]/promalertsacr.azurecr.io\/$app:$version/g" conf.yaml
+    sed -i "s/promalertsacr.azurecr.io\/$app:v1\.[[:digit:]]\.[[:digit:]][[:digit:]]/promalertsacr.azurecr.io\/$app:$version/g" ../conf1.yaml
+    echo "Finished changing conf file for app $app"
 }
 
 echo "Logging in"
@@ -40,7 +41,21 @@ az acr login -n promalertsacr --subscription 72fa99ef-9c84-4a7c-b343-ec62da107d8
 az aks get-credentials --admin --overwrite-existing --name DevCluster -g DevCluster --subscription 72fa99ef-9c84-4a7c-b343-ec62da107d81
 
 
+cd app
 build_docker_and_deploy web
+cd ..
+
+cd client
+build_docker_and_deploy client
+cd ..
+
+# cd prometheus
+# build_docker_and_deploy prometheus
+# cd ..
+
+cd grafana
+build_docker_and_deploy grafana
+cd ..
 
 trap : 0 
 echo >&2
