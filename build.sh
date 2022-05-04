@@ -49,7 +49,7 @@ cd client
 build_docker_and_deploy client
 cd ..
 
-kubectl apply -f conf1.yaml
+#kubectl apply -f conf1.yaml
 
 
 trap : 0 

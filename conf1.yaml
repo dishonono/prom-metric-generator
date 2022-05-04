@@ -22,7 +22,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: client
-        image: promalertsacr.azurecr.io/client:v1.0.8
+        image: promalertsacr.azurecr.io/client:v1.0.9
         ports:
         - containerPort: 3000
         resources:
@@ -99,7 +99,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: web
-        image: promalertsacr.azurecr.io/web:v1.0.67
+        image: promalertsacr.azurecr.io/web:v1.0.68
         ports:
         - containerPort: 3000
         resources:
